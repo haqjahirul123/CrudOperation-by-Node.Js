@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var UsersModel = require('../schema/user');
+var Model = require('../schema/boat');
 var Response = require('../response');
 router.get('/', function(req, res, next) {
     res.render('index');
@@ -87,7 +87,7 @@ router.get('/', function(req, res, next) {
 
 //List Table Data
 router.get('/display', function(req, res) {
-    UsersModel.find(function(err, users) {
+    Model.find(function(err, users) {
         if (err) {
             console.log(err);
         } else {
@@ -115,7 +115,7 @@ router.post('/add', function(req, res, next) {
         boat_sail: req.body.boat_sail,
         boat_motor: req.body.boat_motor
     }
-    var data = UsersModel(mybodydata);
+    var data = Model(mybodydata);
     //var data = UsersModel(req.body);
     data.save(function(err) {
         if (err) {
@@ -130,7 +130,7 @@ router.post('/add', function(req, res, next) {
 
 /* DELETE User BY ID */
 router.get('/delete/:id', function(req, res) {
-    UsersModel.findByIdAndRemove(req.params.id, function(err, project) {
+    Model.findByIdAndRemove(req.params.id, function(err, project) {
         if (err) {
 
             req.flash('error_msg', 'Record Not Deleted');
@@ -146,7 +146,7 @@ router.get('/delete/:id', function(req, res) {
 /* GET SINGLE User BY ID */
 router.get('/show/:id', function(req, res) {
     console.log(req.params.id);
-    UsersModel.findById(req.params.id, function(err, user) {
+    Model.findById(req.params.id, function(err, user) {
         if (err) {
             console.log(err);
         } else {
@@ -160,7 +160,7 @@ router.get('/show/:id', function(req, res) {
 /* GET SINGLE User BY ID */
 router.get('/edit/:id', function(req, res) {
     console.log(req.params.id);
-    UsersModel.findById(req.params.id, function(err, user) {
+    Model.findById(req.params.id, function(err, user) {
         if (err) {
             console.log(err);
         } else {
@@ -173,7 +173,7 @@ router.get('/edit/:id', function(req, res) {
 
 /* UPDATE User */
 router.post('/edit/:id', function(req, res) {
-    UsersModel.findByIdAndUpdate(req.params.id, req.body, function(err) {
+    Model.findByIdAndUpdate(req.params.id, req.body, function(err) {
         if (err) {
             req.flash('error_msg', 'Something went wrong! User could not updated.');
             res.redirect('edit/' + req.params.id);
