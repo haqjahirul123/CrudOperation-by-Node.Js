@@ -2,107 +2,62 @@ var express = require('express');
 var router = express.Router();
 
 var Model = require('../schema/boat');
+const Search = require('../schema/search')
 var Response = require('../response');
 router.get('/', function(req, res, next) {
     res.render('index');
   });
-  
-// router.get('/get-all-users-api', function(req, res, next) {
-//     UsersModel.find({}, function(err, posts) {
-//         if (err) {
-//             Response.errorResponse(err, res);
-//         } else {
-//             Response.successResponse('User Listing!', res, posts);
-//         }
-//     });
-
-// });
-
-// router.post('/add-users-api', function(req, res, next) {
-//     console.log(req.body);
-
-//     const mybodydata = {
-        
-//         boat_name: req.body.boat_name,
-//         boat_manufractureYear: req.body.boat_manufractureYear,
-//         boat_price : req.body.boat_price, 
-//         boat_sail: req.body.boat_sail,
-//         boat_motor: req.body.boat_motor
-//     }
-//     var data = UsersModel(mybodydata);
-//     //var data = UsersModel(req.body);
-//     data.save(function(err) {
-//         if (err) {
-//             Response.errorResponse(err, res);
-           
-//         } else {
-
-//             Response.successResponse('User Added!', res, {});
-//         }
-//     })
-// });
-
-
-/* GET SINGLE POST BY ID */
-// router.get('/get-users-details-api/:id', function(req, res, next) {
-//   UsersModel.findById(req.params.id, function (err, post) {
-//     if(err){
-//       Response.errorResponse(err,res);
-//   }else{
-//       Response.successResponse('User Detail!',res,post);
-//   }
-//   });
-// });
-
-// /* DELETE POST BY ID */
-// router.delete('/delete-users-api', function(req, res, next) {
-//   UsersModel.findByIdAndRemove(req.body._id, function (err, post) {
-//     if (err) {
-//       Response.errorResponse(err,res);
-//     } else {
-//       Response.successResponse('User deleted!',res,{});
-//     }
-//   });
-// });
-
-/* UPDATE POST */
-// router.post('/update-users-api', function(req, res, next) {
-//   console.log(req.body._id);
-//   UsersModel.findByIdAndUpdate(req.body._id, req.body, function (err, post) {
-//   if (err) {
-//     Response.errorResponse(err,res);
-//   } else {
-//     Response.successResponse('User updated!',res,{});
-//   }
-// });
-// });
-
 
 
 
 //List search Data
-router.get('/search/:boat_name', function(req, res) {
+// router.get('/search/:boat_name', function(req, res) {
 
-    console.log(Model.boat_name)
-    Model.find({boat_name:req.params.boat_name},function(err, searchBoats) {
+//     console.log(Model.boat_name)
+//     Model.find({boat_name:req.params.boat_name},function(err, searchBoats) {
+//         if (err) {
+//             console.log(err);
+//         } else {
+//             //  res.render('search', { searchBoats: searchBoats });
+//             console.log(searchBoats);
+//         }
+//     });
+
+//     res.render('search');
+
+//     });
+router.get('/search', function(req, res, next) {
+    res.render('search');
+});
+router.post('/search', function(req, res,next) {
+    {$or:[{region: "NA"},{sector:"Some Sector"}]}
+    Model.find( {$or:[{'boat_name': req.body.boat_name} ,{'boat_price' : { $gt : req.body.boat_price}}]},function(err, users) {
         if (err) {
             console.log(err);
         } else {
-            // res.render('search', { searchBoats: searchBoats });
-            console.log(searchBoats);
+            //res.render('search', { users: users });
+            console.log('HERE',users);
         }
     });
-    
-    res.render('search');
-      
-    });
+
+    // Model.find({'boat_name': req.body.boat_name},function(err, users) {
+    //     if (err) {
+    //         console.log(err);
+    //     } else {
+    //         //res.render('search', { users: users });
+    //         console.log('HERE',users);
+    //     }
+    // });
+
+
+});
 
 
 
 
 //List Table Data
 router.get('/display', function(req, res) {
-    
+
 console.log(Model.boat_name)
     Model.find(function(err, users) {
         if (err) {
@@ -115,7 +70,7 @@ console.log(Model.boat_name)
 });
 
 
-//Display Form 
+//Display Form
 router.get('/add', function(req, res, next) {
     res.render('add-form');
 });
@@ -128,7 +83,7 @@ router.post('/add', function(req, res, next) {
     const mybodydata = {
         boat_name: req.body.boat_name,
         boat_manufractureYear: req.body.boat_manufractureYear,
-        boat_price : req.body.boat_price, 
+        boat_price : req.body.boat_price,
         boat_sail: req.body.boat_sail,
         boat_motor: req.body.boat_motor
     }
