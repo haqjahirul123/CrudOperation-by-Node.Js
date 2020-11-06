@@ -80,13 +80,30 @@ router.get('/', function(req, res, next) {
 
 
 
+//List search Data
+router.get('/search/:boat_name', function(req, res) {
 
+    console.log(Model.boat_name)
+    Model.find({boat_name:req.params.boat_name},function(err, searchBoats) {
+        if (err) {
+            console.log(err);
+        } else {
+            // res.render('search', { searchBoats: searchBoats });
+            console.log(searchBoats);
+        }
+    });
+    
+    res.render('search');
+      
+    });
 
 
 
 
 //List Table Data
 router.get('/display', function(req, res) {
+    
+console.log(Model.boat_name)
     Model.find(function(err, users) {
         if (err) {
             console.log(err);
