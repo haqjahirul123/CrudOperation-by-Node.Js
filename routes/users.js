@@ -36,9 +36,14 @@ router.post('/search', function(req, res,next) {
             console.log(err);
         } else {
             //res.render('search', { users: users });
-            console.log('HERE',users);
+            res.render('display-search', { users: users });
+               
+            
+            console.log('Boat search with Name and Price',users);
         }
     });
+
+  
 
     // Model.find({'boat_name': req.body.boat_name},function(err, users) {
     //     if (err) {
